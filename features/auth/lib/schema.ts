@@ -12,3 +12,10 @@ export const SignUpFormSchema = z
   });
 
 export type SignUpFormData = z.infer<typeof SignUpFormSchema>;
+
+export const LogInFormSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+
+export type LogInFormData = z.infer<typeof LogInFormSchema>;
