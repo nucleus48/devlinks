@@ -50,15 +50,16 @@ export async function createSession(
 }
 
 export async function updateSession() {
-  const session = (await cookies()).get("session")?.value;
-  const payload = await decrypt(session!);
-
-  if (!session || !payload) return null;
-
   const expires = new Date(Date.now() + duration);
   const cookieStore = await cookies();
+  const cookie = cookieStore.get("session")?.value;
+  const session = await decrypt(cookie!);
 
-  cookieStore.set("session", session, {
+  if (!cookie || !session) return null;
+
+  const newSession = await encrypt({ ...session, expiresAt: expires });
+
+  return cookieStore.set("session", newSession, {
     httpOnly: true,
     secure: true,
     expires: expires,
