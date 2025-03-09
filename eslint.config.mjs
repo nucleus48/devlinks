@@ -11,6 +11,14 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    extends: ["plugin:drizzle/recommended"],
+    parser: "@typescript-eslint/parser",
+    parserOptions: {
+      project: "./tsconfig.json",
+    },
+    plugin: ["drizzle"],
+  },
 ];
 
 export default eslintConfig;
