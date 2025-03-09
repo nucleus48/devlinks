@@ -1,5 +1,7 @@
 "use client";
 
+import EmailIcon from "@/components/icons/email";
+import PasswordIcon from "@/components/icons/password";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,13 +12,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { login } from "../lib/actions";
 import { LogInFormData, LogInFormSchema } from "../lib/schema";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export default function LogInForm() {
   const router = useRouter();
@@ -59,14 +60,7 @@ export default function LogInForm() {
                     type="email"
                     invalid={invalid}
                     placeholder="e.g. alex@email.com"
-                    renderIcon={() => (
-                      <Image
-                        src="/images/icon-email.svg"
-                        width={16}
-                        height={16}
-                        alt="email"
-                      />
-                    )}
+                    renderIcon={() => <EmailIcon />}
                   />
                 </FormControl>
               </FormItem>
@@ -85,14 +79,7 @@ export default function LogInForm() {
                     type="password"
                     invalid={invalid}
                     placeholder="Enter your password"
-                    renderIcon={() => (
-                      <Image
-                        src="/images/icon-password.svg"
-                        width={16}
-                        height={16}
-                        alt="password"
-                      />
-                    )}
+                    renderIcon={() => <PasswordIcon />}
                   />
                 </FormControl>
               </FormItem>
