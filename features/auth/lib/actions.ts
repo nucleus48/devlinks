@@ -10,7 +10,7 @@ import {
 import bcrypt from "bcrypt";
 import { usersTable } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
-import { createSession } from "@/lib/auth";
+import { createSession } from "@/lib/session";
 
 export async function signup(formData: SignUpFormData) {
   const { email, password } = await SignUpFormSchema.parseAsync(formData);
@@ -33,24 +33,21 @@ export async function signup(formData: SignUpFormData) {
     })
     .returning({ userId: usersTable.id });
 
-  await createSession(userId, email);
+  await createSession({ userId, email });
   return { success: "Account created successfully" };
 }
 
 export async function login(fromData: LogInFormData) {
-  const data = await LogInFormSchema.parseAsync(fromData);
+  const { email, password } = await LogInFormSchema.parseAsync(fromData);
 
   const user = await db.query.usersTable.findFirst({
-    where: eq(usersTable.email, data.email),
+    where: eq(usersTable.email, email),
   });
 
-  const isValidPassword = await bcrypt.compare(
-    data.password,
-    user?.password || ""
-  );
+  const isValidPassword = await bcrypt.compare(password, user?.password || "");
 
   if (!user || !isValidPassword) return { error: "Invalid credentials" };
 
-  await createSession(user.id, user.email);
+  await createSession({ userId: user.id, email });
   return { success: "Logged in successfully" };
 }
