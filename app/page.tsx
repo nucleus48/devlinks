@@ -1,3 +1,5 @@
-export default function HomePage() {
+import { verifySession } from "@/lib/auth";
+
+export default async function HomePage() {
   return <div>Home</div>;
 }

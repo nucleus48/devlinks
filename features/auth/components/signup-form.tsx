@@ -1,13 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { signup } from "../lib/actions";
-import { SignUpFormData, SignUpFormSchema } from "../lib/schema";
 import {
   Form,
   FormControl,
@@ -15,12 +8,35 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { signup } from "../lib/actions";
+import { SignUpFormData, SignUpFormSchema } from "../lib/schema";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
+  const router = useRouter();
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(SignUpFormSchema),
     defaultValues: { email: "", password: "", confirmPassword: "" },
   });
+
+  const onSubmit = async (data: SignUpFormData) => {
+    try {
+      const { error, success } = await signup(data);
+      if (error) toast.error(error);
+      else if (success) {
+        router.replace("/");
+        toast.success(success);
+      }
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
 
   return (
     <div>
@@ -30,7 +46,7 @@ export default function SignUpForm() {
       </p>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(signup)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="email"

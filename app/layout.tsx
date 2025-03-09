@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <html lang="en">
       <body className={`${instrumentSans.variable} antialiased`}>
         {children}
+        <Toaster richColors theme="light" />
       </body>
     </html>
   );
