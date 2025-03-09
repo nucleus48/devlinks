@@ -15,12 +15,28 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { login } from "../lib/actions";
 import { LogInFormData, LogInFormSchema } from "../lib/schema";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function LogInForm() {
+  const router = useRouter();
   const form = useForm<LogInFormData>({
     resolver: zodResolver(LogInFormSchema),
     defaultValues: { email: "", password: "" },
   });
+
+  const onSubmit = async (data: LogInFormData) => {
+    try {
+      const { error, success } = await login(data);
+      if (error) toast.error(error);
+      else if (success) {
+        router.replace("/");
+        toast.success(success);
+      }
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
 
   return (
     <div>
@@ -30,7 +46,7 @@ export default function LogInForm() {
       </p>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(login)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="email"

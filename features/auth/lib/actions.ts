@@ -39,4 +39,18 @@ export async function signup(formData: SignUpFormData) {
 
 export async function login(fromData: LogInFormData) {
   const data = await LogInFormSchema.parseAsync(fromData);
+
+  const user = await db.query.usersTable.findFirst({
+    where: eq(usersTable.email, data.email),
+  });
+
+  const isValidPassword = await bcrypt.compare(
+    data.password,
+    user?.password || ""
+  );
+
+  if (!user || !isValidPassword) return { error: "Invalid credentials" };
+
+  await createSession(user.id, user.email);
+  return { success: "Logged in successfully" };
 }
