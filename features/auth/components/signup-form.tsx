@@ -41,7 +41,7 @@ export default function SignUpForm() {
 
   return (
     <div>
-      <h1 className="text-[32px] font-bold mb-2">Create account</h1>
+      <h1 className="text-heading">Create account</h1>
       <p className="text-muted-foreground mb-10">
         Let&apos;s get you started sharing your links!
       </p>

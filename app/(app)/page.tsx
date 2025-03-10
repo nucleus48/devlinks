@@ -1,5 +1,5 @@
 import LinksForm from "@/features/links/components/links-form";
 
-export default async function HomePage() {
+export default function HomePage() {
   return <LinksForm />;
 }

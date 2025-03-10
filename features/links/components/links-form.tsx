@@ -2,17 +2,29 @@
 
 import { Button } from "@/components/ui/button";
 import LinksEmpty from "./links-empty";
+import { useFormContext } from "react-hook-form";
+import { LinksFormData } from "../lib/schema";
+import { useLinks } from "../providers/links-provider";
 
 export default function LinksForm() {
+  const { handleSubmit } = useFormContext<LinksFormData>();
+  const { append } = useLinks();
+
+  const onSubmit = (formData: LinksFormData) => console.log(formData);
+
   return (
-    <form className="h-full flex flex-col">
+    <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col">
       <div className="flex flex-col flex-1 p-6 sm:p-10">
-        <h1 className="text-[32px] font-bold mb-2">Customize your links</h1>
+        <h1 className="text-heading">Customize your links</h1>
         <p className="text-muted-foreground mb-10">
           Add/edit/remove links below and then share all your profiles with the
           world!
         </p>
-        <Button variant={"secondary"} className="w-full mb-6">
+        <Button
+          onClick={() => append({ url: "", platform: "" })}
+          variant={"secondary"}
+          className="w-full mb-6"
+        >
           + Add new link
         </Button>
         <div className="flex-1">

@@ -41,7 +41,7 @@ export default function LogInForm() {
 
   return (
     <div>
-      <h1 className="text-[32px] font-bold mb-2">Login</h1>
+      <h1 className="text-heading">Login</h1>
       <p className="text-muted-foreground mb-10">
         Add your details below to get back into the app
       </p>
