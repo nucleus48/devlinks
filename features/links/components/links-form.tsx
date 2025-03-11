@@ -5,10 +5,12 @@ import { useFormContext } from "react-hook-form";
 import { LinksFormData } from "../lib/schema";
 import { useLinks, useUnusedPlatforms } from "../providers/links-provider";
 import LinkList from "./link-list";
+import { toast } from "sonner";
+import { saveLinks } from "../lib/actions";
 
 export default function LinksForm() {
   const unusedPlatforms = useUnusedPlatforms();
-  const { handleSubmit } = useFormContext<LinksFormData>();
+  const { handleSubmit, formState } = useFormContext<LinksFormData>();
   const { append } = useLinks();
 
   const addNewLink = () => {
@@ -17,7 +19,14 @@ export default function LinksForm() {
     append({ platform, url: "" });
   };
 
-  const onSubmit = (formData: LinksFormData) => console.log(formData);
+  const onSubmit = async (formData: LinksFormData) => {
+    try {
+      await saveLinks(formData);
+      toast.success("Links saved successfully");
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col">
@@ -40,8 +49,13 @@ export default function LinksForm() {
           <LinkList />
         </div>
       </div>
-      <div className="p-4 sm:py-6 sm:px-10 border-t border-border">
-        <Button className="block w-full ml-auto lg:w-max">Save</Button>
+      <div className="sticky bottom-0 p-4 sm:py-6 sm:px-10 border-t border-border bg-white">
+        <Button
+          disabled={!formState.isDirty || formState.isSubmitting}
+          className="block w-full ml-auto lg:w-max"
+        >
+          {formState.isSubmitting ? "Saving..." : "Save"}
+        </Button>
       </div>
     </form>
   );

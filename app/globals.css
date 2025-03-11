@@ -63,7 +63,7 @@
     @apply border-border outline-ring;
   }
   body {
-    @apply bg-muted text-foreground;
+    @apply bg-muted text-foreground lg:overflow-hidden;
   }
 }
 

@@ -1,5 +1,5 @@
 import DragAndDropIcon from "@/components/icons/drag-and-drop";
-import { useLinks, useUnusedPlatforms } from "../providers/links-provider";
+import { useUnusedPlatforms } from "../providers/links-provider";
 import { Input } from "@/components/ui/input";
 import LinkIcon from "@/components/icons/link";
 import {
@@ -24,7 +24,6 @@ export type LinkItemProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export default function LinkItemView({ index, ...props }: LinkItemProps) {
-  const { remove } = useLinks();
   const { control } = useFormContext<LinksFormData>();
   const platform = useWatch({ control, name: `links.${index}.platform` });
   const unusedPlatforms = useUnusedPlatforms(platform);
@@ -34,10 +33,12 @@ export default function LinkItemView({ index, ...props }: LinkItemProps) {
 
   return (
     <div {...props} className="p-5 space-y-3 rounded-lg bg-muted border">
-      <div className="text-muted-foreground flex items-center gap-2">
-        <DragAndDropIcon />
-        <span className="font-bold mr-auto">Link #{index + 1}</span>
-        <button type="button" onClick={() => remove(index)}>
+      <div className="text-muted-foreground flex items-center justify-between">
+        <div className="flex gap-2 items-center cursor-grabbing">
+          <DragAndDropIcon />
+          <span className="font-bold">Link #{index + 1}</span>
+        </div>
+        <button type="button" className="cursor-pointer">
           Remove
         </button>
       </div>

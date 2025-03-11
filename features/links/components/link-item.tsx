@@ -54,14 +54,19 @@ export default function LinkItem({ index, id }: LinkItemProps) {
     <div
       ref={setNodeRef}
       {...attributes}
-      {...listeners}
       style={style}
       className="p-5 space-y-3 rounded-lg bg-muted border"
     >
-      <div className="text-muted-foreground flex items-center gap-2">
-        <DragAndDropIcon />
-        <span className="font-bold mr-auto">Link #{index + 1}</span>
-        <button type="button" onClick={() => remove(index)}>
+      <div className="text-muted-foreground flex items-center justify-between">
+        <div {...listeners} className="flex gap-2 items-center cursor-grab">
+          <DragAndDropIcon />
+          <span className="font-bold">Link #{index + 1}</span>
+        </div>
+        <button
+          type="button"
+          className="cursor-pointer"
+          onClick={() => remove(index)}
+        >
           Remove
         </button>
       </div>

@@ -1,4 +1,9 @@
-import { pgTable, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
+import { json, pgTable, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
+
+export type LinkItem = {
+  platform: string;
+  url: string;
+};
 
 export const usersTable = pgTable(
   "users",
@@ -6,15 +11,7 @@ export const usersTable = pgTable(
     id: uuid().primaryKey().defaultRandom(),
     email: text().notNull(),
     password: text().notNull(),
+    links: json().$type<LinkItem[]>(),
   },
   (table) => [uniqueIndex("email_idx").on(table.email)]
 );
-
-export const linksTable = pgTable("links", {
-  id: uuid().primaryKey().defaultRandom(),
-  platform: text().notNull(),
-  url: text().notNull(),
-  userId: uuid()
-    .notNull()
-    .references(() => usersTable.id),
-});
