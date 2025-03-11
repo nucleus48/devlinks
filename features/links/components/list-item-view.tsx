@@ -17,16 +17,13 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { cn } from "@/lib/utils";
+import { HTMLAttributes } from "react";
 
-export type LinkItemProps = {
-  id: string;
+export type LinkItemProps = HTMLAttributes<HTMLDivElement> & {
   index: number;
 };
 
-export default function LinkItem({ index, id }: LinkItemProps) {
+export default function LinkItemView({ index, ...props }: LinkItemProps) {
   const { remove } = useLinks();
   const { control } = useFormContext<LinksFormData>();
   const platform = useWatch({ control, name: `links.${index}.platform` });
@@ -35,29 +32,8 @@ export default function LinkItem({ index, id }: LinkItemProps) {
     (item) => item.platform === platform
   )!;
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id, data: { index } });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    opacity: isDragging ? 0 : 1,
-    transition,
-  };
-
   return (
-    <div
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      style={style}
-      className="p-5 space-y-3 rounded-lg bg-muted border"
-    >
+    <div {...props} className="p-5 space-y-3 rounded-lg bg-muted border">
       <div className="text-muted-foreground flex items-center gap-2">
         <DragAndDropIcon />
         <span className="font-bold mr-auto">Link #{index + 1}</span>
