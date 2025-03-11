@@ -12,6 +12,7 @@ export default function LinksForm() {
   const { append } = useLinks();
 
   const addNewLink = () => {
+    if (unusedPlatforms.length == 0) return;
     const { platform } = unusedPlatforms[0];
     append({ platform, url: "" });
   };
@@ -28,6 +29,7 @@ export default function LinksForm() {
         </p>
         <Button
           type="button"
+          disabled={unusedPlatforms.length == 0}
           onClick={addNewLink}
           variant={"secondary"}
           className="w-full mb-6"
