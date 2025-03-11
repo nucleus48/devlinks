@@ -1,6 +1,7 @@
 import DeviceMockup from "@/components/device-mockup";
 import Header from "@/components/header";
 import LinksProvider from "@/features/links/providers/links-provider";
+import ProfileProvider from "@/features/profile/providers/profile-provider";
 import { getUser } from "@/lib/dal";
 
 export default async function MainLayout({
@@ -15,12 +16,14 @@ export default async function MainLayout({
       </div>
       <div className="flex flex-1 *:flex-1 p-4 gap-6 sm:p-6 lg:overflow-hidden">
         <LinksProvider links={links || []}>
-          <div className="hidden max-w-[560px] lg:flex bg-white rounded-lg items-center justify-center p-6">
-            <DeviceMockup />
-          </div>
-          <main className="bg-white rounded-lg w-full overflow-auto">
-            {children}
-          </main>
+          <ProfileProvider>
+            <div className="hidden max-w-[560px] lg:flex bg-white rounded-lg items-center justify-center p-6">
+              <DeviceMockup />
+            </div>
+            <main className="bg-white rounded-lg w-full overflow-auto">
+              {children}
+            </main>
+          </ProfileProvider>
         </LinksProvider>
       </div>
     </div>

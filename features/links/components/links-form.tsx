@@ -10,7 +10,10 @@ import { saveLinks } from "../lib/actions";
 
 export default function LinksForm() {
   const unusedPlatforms = useUnusedPlatforms();
-  const { handleSubmit, formState } = useFormContext<LinksFormData>();
+  const {
+    handleSubmit,
+    formState: { isDirty, isSubmitting },
+  } = useFormContext<LinksFormData>();
   const { append } = useLinks();
 
   const addNewLink = () => {
@@ -48,10 +51,10 @@ export default function LinksForm() {
       </div>
       <div className="sticky bottom-0 p-4 sm:py-6 sm:px-10 border-t border-border bg-white">
         <Button
-          disabled={!formState.isDirty || formState.isSubmitting}
+          disabled={!isDirty || isSubmitting}
           className="block w-full ml-auto lg:w-max"
         >
-          {formState.isSubmitting ? "Saving..." : "Save"}
+          {isSubmitting ? "Saving..." : "Save"}
         </Button>
       </div>
     </form>
