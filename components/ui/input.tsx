@@ -2,10 +2,18 @@ import { cn } from "@/lib/utils";
 
 export type InputProps = React.ComponentProps<"input"> & {
   invalid?: boolean;
+  message?: string;
   renderIcon: () => React.ReactNode;
 };
 
-function Input({ className, type, renderIcon, invalid, ...props }: InputProps) {
+function Input({
+  className,
+  type,
+  renderIcon,
+  invalid,
+  message,
+  ...props
+}: InputProps) {
   return (
     <div
       aria-invalid={invalid}
@@ -25,7 +33,7 @@ function Input({ className, type, renderIcon, invalid, ...props }: InputProps) {
       />
       {invalid && (
         <div className="shrink-0 text-xs font-normal text-destructive-foreground">
-          Please check again
+          {message || "Please check again"}
         </div>
       )}
     </div>

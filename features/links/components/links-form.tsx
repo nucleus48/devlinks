@@ -1,14 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import LinksEmpty from "./links-empty";
 import { useFormContext } from "react-hook-form";
 import { LinksFormData } from "../lib/schema";
-import { useLinks } from "../providers/links-provider";
+import { useLinks, useUnusedPlatforms } from "../providers/links-provider";
+import LinkList from "./link-list";
 
 export default function LinksForm() {
+  const unusedPlatforms = useUnusedPlatforms();
   const { handleSubmit } = useFormContext<LinksFormData>();
   const { append } = useLinks();
+
+  const addNewLink = () => {
+    const { platform } = unusedPlatforms[0];
+    append({ platform, url: "" });
+  };
 
   const onSubmit = (formData: LinksFormData) => console.log(formData);
 
@@ -21,14 +27,15 @@ export default function LinksForm() {
           world!
         </p>
         <Button
-          onClick={() => append({ url: "", platform: "" })}
+          type="button"
+          onClick={addNewLink}
           variant={"secondary"}
           className="w-full mb-6"
         >
           + Add new link
         </Button>
-        <div className="flex-1">
-          <LinksEmpty />
+        <div className="flex-1 space-y-6">
+          <LinkList />
         </div>
       </div>
       <div className="p-4 sm:py-6 sm:px-10 border-t border-border">
