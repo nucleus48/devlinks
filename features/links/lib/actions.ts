@@ -8,7 +8,12 @@ import { eq } from "drizzle-orm";
 
 export async function saveLinks(formData: LinksFormData) {
   const { userId } = await verifySession();
-  const { links } = await LinksFormSchema.parseAsync(formData);
 
-  await db.update(usersTable).set({ links }).where(eq(usersTable.id, userId));
+  try {
+    const { links } = await LinksFormSchema.parseAsync(formData);
+    await db.update(usersTable).set({ links }).where(eq(usersTable.id, userId));
+    return { success: "Links saved successfully" };
+  } catch {
+    return { error: "Something went wrong" };
+  }
 }

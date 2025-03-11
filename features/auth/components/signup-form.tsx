@@ -13,30 +13,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { signup } from "../lib/actions";
 import { SignUpFormData, SignUpFormSchema } from "../lib/schema";
 
 export default function SignUpForm() {
-  const router = useRouter();
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(SignUpFormSchema),
     defaultValues: { email: "", password: "", confirmPassword: "" },
   });
 
   const onSubmit = async (data: SignUpFormData) => {
-    try {
-      const { error, success } = await signup(data);
-      if (error) toast.error(error);
-      else if (success) {
-        router.replace("/");
-        toast.success(success);
-      }
-    } catch {
-      toast.error("Something went wrong");
-    }
+    const { error } = await signup(data);
+    toast.error(error);
   };
 
   return (
