@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/form";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { cn } from "@/lib/utils";
 
 export type LinkItemProps = {
   id: string;

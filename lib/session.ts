@@ -85,5 +85,6 @@ export async function verifySession() {
 
 export async function deleteSession() {
   const cookieStore = await cookies();
+  // eslint-disable-next-line drizzle/enforce-delete-with-where
   cookieStore.delete("session");
 }
