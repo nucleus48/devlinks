@@ -20,12 +20,9 @@ export default function LinksForm() {
   };
 
   const onSubmit = async (formData: LinksFormData) => {
-    try {
-      await saveLinks(formData);
-      toast.success("Links saved successfully");
-    } catch {
-      toast.error("Something went wrong");
-    }
+    const { error, success } = await saveLinks(formData);
+    if (success) toast.success(success);
+    else if (error) toast.error(error);
   };
 
   return (
