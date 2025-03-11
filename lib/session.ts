@@ -1,6 +1,7 @@
 import "server-only";
 import * as jose from "jose";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
 const alg = "HS256";
@@ -23,14 +24,10 @@ export async function encrypt(payload: SessionPayload) {
 }
 
 export async function decrypt(session: string) {
-  try {
-    const { payload } = await jose.jwtVerify(session, secret, {
-      algorithms: [alg],
-    });
-    return payload as SessionPayload;
-  } catch {
-    console.error("Invalid session token");
-  }
+  const { payload } = await jose.jwtVerify(session, secret, {
+    algorithms: [alg],
+  });
+  return payload as SessionPayload;
 }
 
 export async function createSession(
@@ -50,15 +47,15 @@ export async function createSession(
 }
 
 export async function updateSession() {
-  const session = (await cookies()).get("session")?.value;
-  const payload = await decrypt(session!);
+  const session = await getSession();
 
-  if (!session || !payload) return null;
+  if (!session) return null;
 
   const expires = new Date(Date.now() + duration);
+  const newSession = await encrypt({ ...session, expiresAt: expires });
   const cookieStore = await cookies();
 
-  cookieStore.set("session", session, {
+  return cookieStore.set("session", newSession, {
     httpOnly: true,
     secure: true,
     expires: expires,
@@ -67,7 +64,27 @@ export async function updateSession() {
   });
 }
 
+export async function getSession() {
+  try {
+    const cookieStore = await cookies();
+    const cookie = cookieStore.get("session")?.value;
+    const session = await decrypt(cookie || "");
+    return session;
+  } catch {
+    return null;
+  }
+}
+
+export async function verifySession() {
+  const session = await getSession();
+
+  if (!session) redirect("/login");
+
+  return { userId: session.userId, email: session.email };
+}
+
 export async function deleteSession() {
   const cookieStore = await cookies();
+  // eslint-disable-next-line drizzle/enforce-delete-with-where
   cookieStore.delete("session");
 }

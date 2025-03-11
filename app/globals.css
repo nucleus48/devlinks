@@ -63,12 +63,16 @@
     @apply border-border outline-ring;
   }
   body {
-    @apply bg-muted text-foreground;
+    @apply bg-muted text-foreground lg:overflow-hidden;
   }
 }
 
 @layer components {
   .shadow-drop {
     @apply focus-within:[box-shadow:0_0_32px_var(--tw-shadow-color)] shadow-primary/25;
+  }
+
+  .text-heading {
+    @apply text-2xl sm:text-[32px] font-bold mb-2;
   }
 }

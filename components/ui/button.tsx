@@ -1,6 +1,6 @@
-import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -12,7 +12,8 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground active:bg-primary-light active:shadow-drop disabled:opacity-25",
         secondary:
-          "border border-primary text-primary active:bg-primary-lighter disabled:opacity-25",
+          "border border-primary text-primary hover:bg-primary-lighter active:bg-primary-lighter disabled:opacity-25",
+        tab: "bg-transparent text-muted-foreground hover:text-primary-lighter active:bg-primary-lighter active:text-primary data-[active=true]:bg-primary-lighter data-[active=true]:text-primary",
       },
     },
     defaultVariants: {

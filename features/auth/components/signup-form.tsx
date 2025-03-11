@@ -1,5 +1,7 @@
 "use client";
 
+import EmailIcon from "@/components/icons/email";
+import PasswordIcon from "@/components/icons/password";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,13 +12,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { signup } from "../lib/actions";
 import { SignUpFormData, SignUpFormSchema } from "../lib/schema";
-import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export default function SignUpForm() {
 
   return (
     <div>
-      <h1 className="text-[32px] font-bold mb-2">Create account</h1>
+      <h1 className="text-heading">Create account</h1>
       <p className="text-muted-foreground mb-10">
         Let&apos;s get you started sharing your links!
       </p>
@@ -59,14 +60,7 @@ export default function SignUpForm() {
                     type="email"
                     invalid={invalid}
                     placeholder="e.g. alex@email.com"
-                    renderIcon={() => (
-                      <Image
-                        src="/images/icon-email.svg"
-                        width={16}
-                        height={16}
-                        alt="email"
-                      />
-                    )}
+                    renderIcon={() => <EmailIcon />}
                   />
                 </FormControl>
               </FormItem>
@@ -85,14 +79,7 @@ export default function SignUpForm() {
                     type="password"
                     invalid={invalid}
                     placeholder="At least 8 characters"
-                    renderIcon={() => (
-                      <Image
-                        src="/images/icon-password.svg"
-                        width={16}
-                        height={16}
-                        alt="password"
-                      />
-                    )}
+                    renderIcon={() => <PasswordIcon />}
                   />
                 </FormControl>
               </FormItem>
@@ -111,14 +98,7 @@ export default function SignUpForm() {
                     type="password"
                     invalid={invalid}
                     placeholder="At least 8 characters"
-                    renderIcon={() => (
-                      <Image
-                        src="/images/icon-password.svg"
-                        width={16}
-                        height={16}
-                        alt="password"
-                      />
-                    )}
+                    renderIcon={() => <PasswordIcon />}
                   />
                 </FormControl>
               </FormItem>
