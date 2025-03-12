@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { useProfile } from "../providers/profile-provider";
 import { useEffect } from "react";
+import ProfileDetails from "./profile-details";
 
 export type ProfileFormProps = { profile: ProfileFormData };
 
@@ -37,7 +38,9 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
           <p className="text-muted-foreground mb-10">
             Add your details to create a personal touch to your profile.
           </p>
-          <div className="flex-1"></div>
+          <div className="flex-1 space-y-6">
+            <ProfileDetails />
+          </div>
         </div>
         <div className="sticky bottom-0 p-4 sm:py-6 sm:px-10 border-t border-border bg-white">
           <Button
