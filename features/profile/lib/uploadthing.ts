@@ -1,6 +1,6 @@
-import { verifySession } from "@/lib/session";
+import { getSession } from "@/lib/session";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { updateUserProfile } from "./actions";
+import { UploadThingError } from "uploadthing/server";
 
 const f = createUploadthing();
 
@@ -12,12 +12,12 @@ export const ourFileRouter = {
     },
   })
     .middleware(async () => {
-      const { userId } = await verifySession();
-      return { userId };
+      const session = await getSession();
+      if (!session?.userId) throw new UploadThingError("Unauthorized");
+      return { userId: session.userId };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
-      await updateUserProfile(file.ufsUrl);
-      return { uploadedBy: metadata.userId, url: file.ufsUrl };
+    .onUploadComplete(({ metadata }) => {
+      return { uploadedBy: metadata.userId };
     }),
 } satisfies FileRouter;
 

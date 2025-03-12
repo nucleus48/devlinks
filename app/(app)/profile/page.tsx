@@ -10,7 +10,7 @@ export default async function ProfilePage() {
         firstName: firstName || "",
         lastName: lastName || "",
         imageUrl: imageUrl || "",
-        email: previewEmail || "",
+        previewEmail: previewEmail || "",
       }}
     />
   );

@@ -11,10 +11,12 @@ import ProfileDetails from "./profile-details";
 import ImageUpload from "./image-upload";
 import { generateReactHelpers } from "@uploadthing/react";
 import { OurFileRouter } from "../lib/uploadthing";
+import { toast } from "sonner";
+import { updateUserProfile } from "../lib/actions";
 
 export type ProfileFormProps = { profile: ProfileFormData };
 
-const { useUploadThing } = generateReactHelpers<OurFileRouter>();
+const { uploadFiles } = generateReactHelpers<OurFileRouter>();
 
 export default function ProfileForm({ profile }: ProfileFormProps) {
   const [, setProfile] = useProfile();
@@ -30,7 +32,26 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
   } = form;
 
   const data = useWatch({ control });
-  const onSubmit = async (formData: ProfileFormData) => console.log(formData);
+  const onSubmit = async (formData: ProfileFormData) => {
+    const { firstName, lastName, previewEmail, image } = formData;
+
+    let imageUrl: string | undefined = undefined;
+
+    if (image && image.length > 0) {
+      const data = await uploadFiles("imageUploader", { files: [image[0]] });
+      imageUrl = data[0]?.ufsUrl;
+    }
+
+    const { success, error } = await updateUserProfile({
+      firstName,
+      lastName,
+      previewEmail,
+      imageUrl,
+    });
+
+    if (success) toast.success(success);
+    else if (error) toast.error(error);
+  };
 
   useEffect(() => {
     setProfile(data);

@@ -3,7 +3,7 @@ import { z } from "zod";
 export const ProfileFormSchema = z.object({
   firstName: z.string().min(1, "Can't be empty"),
   lastName: z.string().min(1, "Can't be empty"),
-  email: z.string().email().optional().or(z.literal("")),
+  previewEmail: z.string().email().optional().or(z.literal("")),
   imageUrl: z.string().url().optional().or(z.literal("")),
   image: z
     .custom<FileList | undefined>(

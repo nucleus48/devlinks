@@ -54,7 +54,7 @@ export default function ProfileDetails() {
       />
       <FormField
         control={control}
-        name="email"
+        name="previewEmail"
         render={({ field, fieldState: { invalid, error } }) => (
           <FormItem className="xl:flex *:flex-1 gap-x-4">
             <FormLabel className="xl:text-base max-w-[240px]">Email</FormLabel>
