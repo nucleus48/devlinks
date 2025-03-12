@@ -1,15 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { ProfileFormData, ProfileFormSchema } from "../lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { useProfile } from "../providers/profile-provider";
 import { useEffect } from "react";
 import ProfileDetails from "./profile-details";
+import ImageUpload from "./image-upload";
+import { generateReactHelpers } from "@uploadthing/react";
+import { OurFileRouter } from "../lib/uploadthing";
 
 export type ProfileFormProps = { profile: ProfileFormData };
+
+const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
 export default function ProfileForm({ profile }: ProfileFormProps) {
   const [, setProfile] = useProfile();
@@ -21,14 +26,15 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
   const {
     handleSubmit,
     formState: { isSubmitting, isDirty },
-    getValues,
+    control,
   } = form;
 
+  const data = useWatch({ control });
   const onSubmit = async (formData: ProfileFormData) => console.log(formData);
 
   useEffect(() => {
-    setProfile(getValues());
-  }, [getValues, setProfile]);
+    setProfile(data);
+  }, [data, setProfile]);
 
   return (
     <Form {...form}>
@@ -39,6 +45,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
             Add your details to create a personal touch to your profile.
           </p>
           <div className="flex-1 space-y-6">
+            <ImageUpload />
             <ProfileDetails />
           </div>
         </div>

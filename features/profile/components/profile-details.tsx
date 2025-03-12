@@ -61,6 +61,7 @@ export default function ProfileDetails() {
             <FormControl>
               <Input
                 {...field}
+                type="email"
                 className="bg-white"
                 placeholder="e.g. email@example.com"
                 invalid={invalid}
