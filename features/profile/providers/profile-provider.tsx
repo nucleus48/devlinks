@@ -3,14 +3,19 @@
 import { ProfileFormData } from "../lib/schema";
 import { createContext, use, useState } from "react";
 
-export type ProfileDetails = Partial<ProfileFormData>;
+type NullPartial<T> = { [P in keyof T]?: null | T[P] | undefined };
+
+export type ProfileDetails = NullPartial<ProfileFormData>;
 
 export const ProfileContext = createContext<
   [ProfileDetails, React.Dispatch<React.SetStateAction<ProfileDetails>>] | null
 >(null);
 
-export default function ProfileProvider({ children }: React.PropsWithChildren) {
-  const state = useState<ProfileDetails>({});
+export default function ProfileProvider({
+  children,
+  ...props
+}: React.PropsWithChildren<ProfileDetails>) {
+  const state = useState<ProfileDetails>(props);
 
   return <ProfileContext value={state}>{children}</ProfileContext>;
 }

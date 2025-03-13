@@ -7,7 +7,8 @@ import { getUser } from "@/lib/dal";
 export default async function MainLayout({
   children,
 }: React.PropsWithChildren) {
-  const { links } = await getUser();
+  const { links, firstName, lastName, imageUrl, previewEmail } =
+    await getUser();
 
   return (
     <div className="container mx-auto h-screen flex flex-col">
@@ -16,7 +17,7 @@ export default async function MainLayout({
       </div>
       <div className="flex flex-1 *:flex-1 p-4 gap-6 sm:p-6 lg:overflow-hidden">
         <LinksProvider links={links || []}>
-          <ProfileProvider>
+          <ProfileProvider {...{ firstName, lastName, imageUrl, previewEmail }}>
             <div className="hidden max-w-[560px] lg:flex bg-white rounded-lg items-center justify-center p-6">
               <DeviceMockup />
             </div>
