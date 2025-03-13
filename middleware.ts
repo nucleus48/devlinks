@@ -12,7 +12,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
-  if (!isProtectedRoute && cookie) {
+  if (!isProtectedRoute && cookie && !path.startsWith("/preview")) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 

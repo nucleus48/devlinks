@@ -59,11 +59,13 @@ export default function LinkList() {
     >
       <SortableContext items={fields} strategy={verticalListSortingStrategy}>
         {fields.map((field, index) => (
-          <LinkItem key={field.id} index={index} id={field.id} />
+          <LinkItem key={field.id} index={index} {...field} />
         ))}
       </SortableContext>
       <DragOverlay>
-        {activeIndex !== undefined && <LinkItemView index={activeIndex} />}
+        {activeIndex !== undefined && (
+          <LinkItemView index={activeIndex} {...fields[activeIndex]} />
+        )}
       </DragOverlay>
     </DndContext>
   );

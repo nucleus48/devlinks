@@ -20,3 +20,12 @@ export const getUser = cache(async () => {
 
   return user;
 });
+
+export const getPreviewUser = cache(async (userId: string) => {
+  const user = await db.query.usersTable.findFirst({
+    where: eq(usersTable.id, userId),
+    columns: { password: false },
+  });
+
+  return user;
+});

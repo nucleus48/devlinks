@@ -5,7 +5,6 @@ import {
   useFieldArray,
   UseFieldArrayReturn,
   useForm,
-  useFormContext,
   useWatch,
 } from "react-hook-form";
 import { LinksFormData, LinksFormSchema } from "../lib/schema";
@@ -29,13 +28,20 @@ export default function LinksProvider({ children, links }: LinksProviderProps) {
     defaultValues: { links },
   });
 
-  const fieldArray = useFieldArray({
+  const watchedLinks = useWatch({ control: form.control, name: "links" });
+
+  const { fields, ...fieldArray } = useFieldArray({
     control: form.control,
     name: "links",
   });
 
+  const watchedFields = watchedLinks.map((link, index) => ({
+    ...fields[index],
+    ...link,
+  }));
+
   return (
-    <LinksContext value={fieldArray}>
+    <LinksContext value={{ ...fieldArray, fields: watchedFields }}>
       <Form {...form}>{children}</Form>
     </LinksContext>
   );
@@ -46,8 +52,7 @@ export function useLinks() {
 }
 
 export function useUnusedPlatforms(excludePlatform?: string) {
-  const { control } = useFormContext<LinksFormData>();
-  const links = useWatch({ control, name: "links" });
+  const { fields: links } = useLinks();
   const usedPlatforms = links.map((link) => link.platform);
 
   return Platforms.filter(

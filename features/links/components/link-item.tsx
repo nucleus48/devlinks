@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LinksFormData } from "../lib/schema";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -23,12 +23,12 @@ import { CSS } from "@dnd-kit/utilities";
 export type LinkItemProps = {
   id: string;
   index: number;
+  platform: string;
 };
 
-export default function LinkItem({ index, id }: LinkItemProps) {
+export default function LinkItem({ index, id, platform }: LinkItemProps) {
   const { remove } = useLinks();
   const { control } = useFormContext<LinksFormData>();
-  const platform = useWatch({ control, name: `links.${index}.platform` });
   const unusedPlatforms = useUnusedPlatforms(platform);
   const { placeholder } = unusedPlatforms.find(
     (item) => item.platform === platform
