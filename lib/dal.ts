@@ -22,10 +22,14 @@ export const getUser = cache(async () => {
 });
 
 export const getPreviewUser = cache(async (userId: string) => {
-  const user = await db.query.usersTable.findFirst({
-    where: eq(usersTable.id, userId),
-    columns: { password: false },
-  });
+  try {
+    const user = await db.query.usersTable.findFirst({
+      where: eq(usersTable.id, userId),
+      columns: { password: false },
+    });
 
-  return user;
+    return user;
+  } catch (error) {
+    console.error(error);
+  }
 });
