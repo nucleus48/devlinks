@@ -1,7 +1,12 @@
 "use client";
 
 import React, { createContext, use } from "react";
-import { useFieldArray, UseFieldArrayReturn, useForm, useFormContext } from "react-hook-form";
+import {
+  useFieldArray,
+  UseFieldArrayReturn,
+  useForm,
+  useWatch,
+} from "react-hook-form";
 import { LinksFormData, LinksFormSchema } from "../lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
@@ -23,13 +28,20 @@ export default function LinksProvider({ children, links }: LinksProviderProps) {
     defaultValues: { links },
   });
 
-  const fieldArray = useFieldArray({
+  const watchedLinks = useWatch({ control: form.control, name: "links" });
+
+  const { fields, ...fieldArray } = useFieldArray({
     control: form.control,
     name: "links",
   });
 
+  const watchedFields = watchedLinks.map((link, index) => ({
+    ...fields[index],
+    ...link,
+  }));
+
   return (
-    <LinksContext value={fieldArray}>
+    <LinksContext value={{ ...fieldArray, fields: watchedFields }}>
       <Form {...form}>{children}</Form>
     </LinksContext>
   );
@@ -40,8 +52,7 @@ export function useLinks() {
 }
 
 export function useUnusedPlatforms(excludePlatform?: string) {
-  const { watch } = useFormContext<LinksFormData>()
-  const links = watch("links")
+  const { fields: links } = useLinks();
   const usedPlatforms = links.map((link) => link.platform);
 
   return Platforms.filter(

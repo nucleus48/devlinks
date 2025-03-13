@@ -1,16 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/session";
 
+const privateRoutes = ["/", "/profile"];
+
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
-  const isProtectedRoute = path === "/";
+  const isProtectedRoute = privateRoutes.includes(path);
   const cookie = await updateSession();
 
   if (isProtectedRoute && !cookie) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
-  if (!isProtectedRoute && cookie) {
+  if (!isProtectedRoute && cookie && !path.startsWith("/preview")) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 

@@ -9,7 +9,7 @@ import ProfileDetailsHeaderIcon from "./icons/profile-details-header";
 import { usePathname } from "next/navigation";
 import PreviewHeaderIcon from "./icons/preview-header";
 
-export default function Header() {
+export default function Header({ userId }: { userId: string }) {
   const pathname = usePathname();
 
   return (
@@ -39,7 +39,7 @@ export default function Header() {
         </Link>
       </Button>
       <Button variant={"secondary"} asChild>
-        <Link href="/preview">
+        <Link href={`/preview/${userId}`}>
           <PreviewHeaderIcon className="md:hidden" />
           <span className="hidden md:inline">Preview</span>
         </Link>

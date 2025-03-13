@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LinksFormData } from "../lib/schema";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -21,11 +21,15 @@ import { HTMLAttributes } from "react";
 
 export type LinkItemProps = HTMLAttributes<HTMLDivElement> & {
   index: number;
+  platform: string;
 };
 
-export default function LinkItemView({ index, ...props }: LinkItemProps) {
+export default function LinkItemView({
+  index,
+  platform,
+  ...props
+}: LinkItemProps) {
   const { control } = useFormContext<LinksFormData>();
-  const platform = useWatch({ control, name: `links.${index}.platform` });
   const unusedPlatforms = useUnusedPlatforms(platform);
   const { placeholder } = unusedPlatforms.find(
     (item) => item.platform === platform

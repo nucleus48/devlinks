@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 export type InputProps = React.ComponentProps<"input"> & {
   invalid?: boolean;
   message?: string;
-  renderIcon: () => React.ReactNode;
+  renderIcon?: () => React.ReactNode;
 };
 
 function Input({
@@ -24,7 +24,7 @@ function Input({
         className
       )}
     >
-      <div className="shrink-0">{renderIcon()}</div>
+      {renderIcon && <div className="shrink-0">{renderIcon()}</div>}
       <input
         type={type}
         data-slot="input"
